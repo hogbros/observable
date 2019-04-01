@@ -1,0 +1,19 @@
+{
+  "name": "observable",
+  "version": "0.0.1",
+  "description": "Generic observable mixin",
+  "main": "./observable.js",
+  "scripts": {
+    "test": "npm run build && mocha",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2",
+    "typescript": "^3.4.1"
+  }
+}
