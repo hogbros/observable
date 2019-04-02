@@ -1,5 +1,9 @@
 /node_modules
+/.nyc_output
+/coverage
 
 #build
 /observable.js
 /observable.js.map
+/observable.d.ts
+/observable.d.ts.map

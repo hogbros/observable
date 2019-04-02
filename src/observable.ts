@@ -1,46 +1,67 @@
 interface Constructor<T> {
-  new(...args: unknown[]): T;
-  prototype: T;
+  new (...args: unknown[]): T;
+}
+
+export type ObservableType<Base> = Constructor<ObservableMixin<Base>> & {
+  isObservable: true;
+  observeProperty(key: PropertyKey): void;
+};
+export type ObservableMixin<Base> = Base & ObservableDeclaration;
+
+declare abstract class ObservableDeclaration {
+  static readonly isObservable: true;
+  static observeProperty(key: PropertyKey): void;
+  abstract propertyChangedCallback(
+    key: PropertyKey,
+    oldValue: unknown,
+    value: unknown
+  ): void;
 }
 
 export function Observable<Base>(baseClass: Constructor<Base>) {
-  type Observable = typeof ObservableMixin &
-    Constructor<ObservableMixin & Base>;
-  if ((baseClass as Observable).isObservable) {
-    return baseClass as Observable;
+  if ((baseClass as ObservableType<Base>).isObservable) {
+    return baseClass as ObservableType<Base>;
   }
-  abstract class ObservableMixin extends (baseClass as Constructor<{}>) {
+  abstract class ObservableImp extends (baseClass as Constructor<{}>)
+    implements ObservableDeclaration {
     public static readonly isObservable = true;
 
     static observeProperty(key: PropertyKey) {
-      let propertyDeclaration: PropertyDescriptor & ThisType<ObservableMixin>;
+      let get: (target: any) => unknown;
+      let set: (target: any, value: unknown) => void;
       if (key in baseClass.prototype) {
-        propertyDeclaration = {
-          get() {
-            return super[key];
-          },
-          set(value) {
-            const oldValue = super[key];
-            super[key] = value;
-            this.propertyChangedCallback(key, oldValue, value);
-          }
-        };
+        const superPropertyDescriptor = getPropertyDescriptor(
+          baseClass.prototype,
+          key
+        )!;
+        if (
+          superPropertyDescriptor.get === undefined ||
+          superPropertyDescriptor.set === undefined
+        ) {
+          throw new Error(
+            "Unable to observe a base class property that does not have a getter and setter"
+          );
+        }
+        get = target => superPropertyDescriptor.get!.call(target);
+        set = (target, value) =>
+          superPropertyDescriptor.set!.call(target, value);
       } else {
         const privateKey = typeof key === "symbol" ? Symbol() : `__${key}`;
-        propertyDeclaration = {
-          get() {
-            return (this as any)[privateKey];
-          },
-          set(value) {
-            const oldValue = (this as any)[privateKey];
-            (this as any)[privateKey] = value;
-            this.propertyChangedCallback(key, oldValue, value);
-          }
-        };
+        get = target => target[privateKey];
+        set = (target, value) => (target[privateKey] = value);
       }
-      propertyDeclaration.configurable = true;
-      propertyDeclaration.enumerable = true;
-      Object.defineProperty(this.prototype, key, propertyDeclaration);
+      Object.defineProperty(this.prototype, key, {
+        get() {
+          return get(this);
+        },
+        set(value) {
+          const oldValue = get(this);
+          set(this, value);
+          this.propertyChangedCallback(key, oldValue, value);
+        },
+        configurable: true,
+        enumerable: true
+      });
     }
     abstract propertyChangedCallback(
       key: PropertyKey,
@@ -48,5 +69,12 @@ export function Observable<Base>(baseClass: Constructor<Base>) {
       value: unknown
     ): void;
   }
-  return ObservableMixin as Observable;
+  return ObservableImp as ObservableType<Base>;
+}
+
+function getPropertyDescriptor(target: any, key: PropertyKey) {
+  while (!target.hasOwnProperty(key)) {
+    target = Object.getPrototypeOf(target);
+  }
+  return Object.getOwnPropertyDescriptor(target, key);
 }

@@ -6,10 +6,12 @@
   "files": [
     "/src/",
     "/observable.js",
-    "/observable.js.map"
+    "/observable.js.map",
+    "/observable.d.ts",
+    "/observable.d.ts.map"
   ],
   "scripts": {
-    "test": "mocha -r register-test test/**/*.spec.ts",
+    "test": "nyc mocha -r register-test test/**/*.spec.ts",
     "build": "tsc"
   },
   "author": "Hogbros",
@@ -21,6 +23,7 @@
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "mocha": "^6.0.2",
+    "nyc": "^13.3.0",
     "ts-node": "^8.0.3",
     "typescript": "^3.4.1"
   },
@@ -35,5 +38,20 @@
   "bugs": {
     "url": "https://github.com/hogbros/observable/issues"
   },
-  "homepage": "https://github.com/hogbros/observable#readme"
+  "homepage": "https://github.com/hogbros/observable#readme",
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "text"
+    ],
+    "all": true  
+  }
 }
