@@ -1,6 +1,5 @@
-node_modules
+/node_modules
 
 #build
-observable.js
-observable.js.map
-test
+/observable.js
+/observable.js.map

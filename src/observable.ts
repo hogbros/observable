@@ -1,3 +1,8 @@
+interface Constructor<T> {
+  new(...args: unknown[]): T;
+  prototype: T;
+}
+
 export function Observable<Base>(baseClass: Constructor<Base>) {
   type Observable = typeof ObservableMixin &
     Constructor<ObservableMixin & Base>;
