@@ -2,10 +2,11 @@
   "name": "observable",
   "version": "0.0.1",
   "description": "Generic observable mixin",
-  "main": "./observable.js",
+  "main": "./cjs/observable.js",
   "module": "./observable.js",
   "files": [
     "/src/",
+    "/cjs/",
     "/observable.js",
     "/observable.js.map",
     "/observable.d.ts",
@@ -13,7 +14,7 @@
   ],
   "scripts": {
     "test": "nyc mocha -r register-test test/**/*.spec.ts",
-    "build": "tsc"
+    "build": "tsc & tsc --module CommonJS --outDir ./cjs"
   },
   "author": "Hogbros",
   "license": "ISC",
