@@ -1,16 +1,16 @@
 {
-  "name": "observable",
+  "name": "observe-property",
   "version": "0.0.1",
-  "description": "Generic observable mixin",
-  "main": "./cjs/observable.js",
-  "module": "./observable.js",
+  "description": "Observe property changes on an object",
+  "main": "./cjs/observe-property.js",
+  "module": "./observe-property.js",
   "files": [
     "/src/",
     "/cjs/",
-    "/observable.js",
-    "/observable.js.map",
-    "/observable.d.ts",
-    "/observable.d.ts.map"
+    "/observe-property.js",
+    "/observe-property.js.map",
+    "/observe-property.d.ts",
+    "/observe-property.d.ts.map"
   ],
   "scripts": {
     "test": "nyc mocha -r register-test test/**/*.spec.ts",
@@ -35,12 +35,12 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hogbros/observable.git"
+    "url": "git+https://github.com/hogbros/observe-property.git"
   },
   "bugs": {
-    "url": "https://github.com/hogbros/observable/issues"
+    "url": "https://github.com/hogbros/observe-property/issues"
   },
-  "homepage": "https://github.com/hogbros/observable#readme",
+  "homepage": "https://github.com/hogbros/observe-property#readme",
   "nyc": {
     "extension": [
       ".ts"

@@ -3,8 +3,8 @@
 /coverage
 
 #build
-/observable.js
-/observable.js.map
-/observable.d.ts
-/observable.d.ts.map
+/observe-property.js
+/observe-property.js.map
+/observe-property.d.ts
+/observe-property.d.ts.map
 /cjs
