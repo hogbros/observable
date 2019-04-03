@@ -5,13 +5,13 @@ Wire in to property changes on an object
 ## Installation
 
 ```bash
-npm install observe-property --save
+npm install @hogbros/observe-property --save
 ```
 
 ## Basic Usage
 
 ```js
-import { observeProperty } from "@hogbros/observed-properties";
+import { observeProperty } from "@hogbros/observe-property";
 
 const myObject = {
   myObservedProperty: "foo";
@@ -29,4 +29,4 @@ myObject.myObservedProperty = "bar";
 
 ## How it Works
 
-observeProperty will dynamically create, a property getter/setter on the specified object. The setter on this property will invoke a callback method to notify of any updates on the property.
+observeProperty will dynamically create a property getter/setter on the specified object. The setter on this property will invoke a callback method to notify of any updates on the property.
