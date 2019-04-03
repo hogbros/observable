@@ -1,5 +1,7 @@
 # observeProperty
 
+[![Build Status](https://dev.azure.com/HogBros/Observe-Property/_apis/build/status/hogbros.observe-property)](https://dev.azure.com/HogBros/Observe-Property/_apis/build/status/hogbros.observe-property)
+
 Wire in to property changes on an object
 
 ## Installation
