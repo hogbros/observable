@@ -13,7 +13,7 @@
     "/observe-property.d.ts.map"
   ],
   "scripts": {
-    "test": "nyc mocha -r register-test test/**/*.spec.ts",
+    "test": "nyc --reporter cobertura --reporter text mocha -r register-test test/**/*.spec.ts --reporter mocha-multi-reporters --reporter-options configFile=mocha-reporter-config.json",
     "build": "tsc & tsc --module CommonJS --outDir ./cjs"
   },
   "author": "Hogbros",
@@ -25,6 +25,8 @@
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "mocha": "^6.0.2",
+    "mocha-junit-reporter": "^1.21.0",
+    "mocha-multi-reporters": "^1.1.7",
     "nyc": "^13.3.0",
     "ts-node": "^8.0.3",
     "typescript": "^3.4.1"
@@ -54,6 +56,6 @@
     "reporter": [
       "text"
     ],
-    "all": true  
+    "all": true
   }
 }
