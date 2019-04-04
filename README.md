@@ -1,6 +1,7 @@
 # observeProperty
 
 [![build badge]][build url]
+[![test badge]][build url]
 [![coverage badge]][build url]
 
 Wire in to property changes on an object
@@ -34,6 +35,7 @@ myObject.myObservedProperty = "bar";
 
 observeProperty will dynamically create a property getter/setter on the specified object. The setter on this property will invoke a callback method to notify of any updates on the property.
 
-[build url]: https://dev.azure.com/HogBros/Observe-Property/_build/latest?definitionId=15&branchName=feature/documentation_badges
-[build badge]: https://img.shields.io/azure-devops/build/HogBros/93e5ea09-1097-48ed-a3d9-ad72bd9a5022/15/feature/documentation_badges.svg
-[coverage badge]: https://img.shields.io/azure-devops/coverage/hogbros/observe-property/15/feature/documentation_badges.svg
+[build url]: https://dev.azure.com/HogBros/Observe-Property/_build/latest?definitionId=15&branchName=master
+[build badge]: https://img.shields.io/azure-devops/build/HogBros/93e5ea09-1097-48ed-a3d9-ad72bd9a5022/15/master.svg
+[coverage badge]: https://img.shields.io/azure-devops/coverage/hogbros/observe-property/15/master.svg
+[test badge]: https://img.shields.io/azure-devops/tests/hogbros/observe-property/15/master.svg
