@@ -8,8 +8,8 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-  npm install
-  npm install -g mocha-junit-reporter
+    npm install
+    npm install -g mocha-junit-reporter
   displayName: 'Install test dependencies'
 
 - script: npx tsc --noEmit
