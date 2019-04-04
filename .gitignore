@@ -1,6 +1,4 @@
 /node_modules
-/.nyc_output
-/coverage
 
 #build
 /observe-property.js
@@ -8,3 +6,8 @@
 /observe-property.d.ts
 /observe-property.d.ts.map
 /cjs
+
+#test
+/.nyc_output
+/coverage
+test-results.xml
