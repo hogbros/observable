@@ -1,0 +1,30 @@
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- script: |
+  npm install
+  npm install -g mocha-junit-reporter
+  displayName: 'Install test dependencies'
+
+- script: npx tsc --noEmit
+  displayName: 'Verify Build'
+
+- script: npx nyc --reporter cobertura --reporter html mocha -r register-test test/**/*.spec.ts --reporter mocha-junit-reporter
+  displayName: 'Run Tests'
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: 'test-results.xml'
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura
+    summaryFileLocation: 'coverage/cobertura-coverage.xml'
+    reportDirectory: 'coverage'
