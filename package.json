@@ -1,6 +1,6 @@
 {
-  "name": "observe-property",
-  "version": "0.0.1",
+  "name": "@hogbros/observe-property",
+  "version": "0.1.0",
   "description": "Observe property changes on an object",
   "main": "./cjs/observe-property.js",
   "module": "./observe-property.js",
@@ -13,7 +13,7 @@
     "/observe-property.d.ts.map"
   ],
   "scripts": {
-    "test": "nyc mocha -r register-test test/**/*.spec.ts",
+    "test": "nyc --reporter text mocha -r register-test test/**/*.spec.ts",
     "build": "tsc & tsc --module CommonJS --outDir ./cjs"
   },
   "author": "Hogbros",
@@ -54,6 +54,6 @@
     "reporter": [
       "text"
     ],
-    "all": true  
+    "all": true
   }
 }
