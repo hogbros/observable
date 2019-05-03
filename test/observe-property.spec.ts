@@ -1,39 +1,33 @@
-import { observeProperty } from "../src/observe-property";
+import { onSet } from "../src/observe-property";
 import { expect, spy } from "chai";
 
-describe("observeProperty", function() {
-  const propertyTypes = [
-    { key: Symbol(), type: "Symbol" },
-    { key: "myObservedProperty", type: "string" },
-    { key: 0, type: "number" }
-  ];
-  propertyTypes.forEach(({ key, type }) =>
-    it(`correctly maintains values on an observed ${type} property`, function() {
-      const myObject = { [key]: "foo" } as any;
-      observeProperty(myObject, key, () => {});
-      expect(myObject[key]).to.deep.equal("foo");
-      myObject[key] = "bar";
-      expect(myObject[key]).to.deep.equal("bar");
-    })
-  );
-  it("persists an existing property getter/setter when observed", function() {
-    const property: PropertyDescriptor & ThisType<any> = {
-      get() {
-        return this.myHiddenProperty;
-      },
-      set(value) {
-        this.myHiddenProperty = value;
-      },
-      configurable: true
-    };
-    const getterSpy = spy.on(property, "get");
-    const setterSpy = spy.on(property, "set");
-    const myObject: {
-      myHiddenProperty?: string;
+describe("onSet", function() {
+  it(`correctly maintains values on an observed property`, function() {
+    class MyClass {
+      @onSet(() => {})
       myObservedProperty?: string;
-    } = { myHiddenProperty: "foo" };
-    Object.defineProperty(myObject, "myObservedProperty", property);
-    observeProperty(myObject, "myObservedProperty", () => {});
+    }
+    const myObject = new MyClass();
+    myObject.myObservedProperty = "bar";
+    expect(myObject.myObservedProperty).to.deep.equal("bar");
+  });
+  it("persists an existing property getter/setter when observed", function() {
+    const getterSpy = spy();
+    const setterSpy = spy();
+    class MyClass {
+      myHiddenProperty?: string = "foo";
+
+      @onSet(() => {})
+      get myObservedProperty() {
+        getterSpy();
+        return this.myHiddenProperty;
+      }
+      set myObservedProperty(value) {
+        (setterSpy as any)(value);
+        this.myHiddenProperty = value;
+      }
+    }
+    const myObject = new MyClass();
 
     expect(myObject)
       .property("myObservedProperty")
@@ -43,9 +37,13 @@ describe("observeProperty", function() {
     expect(setterSpy).to.have.been.called.with("bar");
   });
   it("fires a callback when an observed property is updated", function() {
-    const myObject: { myObservedProperty?: string } = {};
     const observeSpy = spy();
-    observeProperty(myObject, "myObservedProperty", observeSpy);
+    class MyClass {
+      @onSet(observeSpy)
+      myObservedProperty?: string;
+    }
+    const myObject = new MyClass();
+
     myObject.myObservedProperty = "foo";
     expect(observeSpy).to.have.been.called.with(myObject, undefined, "foo");
     myObject.myObservedProperty = "bar";
@@ -61,8 +59,13 @@ describe("observeProperty", function() {
         this.myWrappedProperty = value;
       }
     }
-    const myObject = new Base();
-    observeProperty(myObject, "myProperty", () => {});
+    class MyClass extends Base {
+      @onSet(() => {})
+      myProperty: any;
+    }
+
+    const myObject = new MyClass();
+
     myObject.myProperty = "foo";
     expect(myObject)
       .to.have.property("myProperty")
